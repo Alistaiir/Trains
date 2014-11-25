@@ -15,6 +15,7 @@ import com.opencsv.CSVReader;
 
 
 public class TrainSchedule extends Schedule{		
+	String[][] result;
 	
 	@Override
 	public void upload() throws IOException {
@@ -27,12 +28,11 @@ public class TrainSchedule extends Schedule{
 			String[][] data = new String[list.size()][];
 			data = list.toArray(data);
 			
-			String[][] result = new String[list.size()][list.size()];
+			result = new String[list.size()][list.size()];
 			for(int i = 0; i < data.length; i++){
 				for(int j = 0 ; j < data[i].length; j++){
 					result[i] = data[i][j].split(",");			
 				}
-				
 			}
 			
 			for(int i = 0; i < result.length; i++){
@@ -40,13 +40,11 @@ public class TrainSchedule extends Schedule{
 					System.out.print(result[i][j] + " ");
 					if(j == result[i].length-1){
 						System.out.println(" ");
-						
 					}
 				}
 			}
-			
 		}
-		    
+   
 		catch (FileNotFoundException e) {
 				e.printStackTrace();
 	    }
@@ -62,31 +60,33 @@ public class TrainSchedule extends Schedule{
 				}
 			}
 		}
-		
 	  }
 		
 	@Override
 	public void display() {
 		JFrame frame = new JFrame();
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-	    Object rowData[][] = { { "185S33MB26" ,"27","CRFTDEP","01-JAN-01 00.00.00","26-OCT-14 07.56.00","01-JAN-01 00.00.00","01-JAN-01 00.00.00","01-JAN-01 00.00.00" },
-	    					   { "185S33MB26","27","CRFTESP","26-OCT-14 08.03.00","26-OCT-14 08.08.00","01-JAN-01 00.00.00","01-JAN-01 00.00.00","01-JAN-01 00.00.00" } };
-	    Object columnNames[] = { };
-	    JTable table = new JTable(rowData, columnNames);
+	    
+	    Object rowSchedule[][] = result;
+	    Object columnTitle[] = result[0];
+	    JTable table = new JTable(rowSchedule, columnTitle);
 
 	    JScrollPane scrollPane = new JScrollPane(table);
 	    frame.add(scrollPane, BorderLayout.CENTER);
 	    frame.setSize(1500, 500);
 	    frame.setVisible(true);
-		
 	}
 
-
-
 	@Override
-	public void search() {
-		// TODO Auto-generated method stub
+	public void search(String keyword) {
+		for(int i = 0; i < result.length; i++){
+			for(int j = 0; j < result[i].length; j++){
+				//System.out.println(result[i][j]);
+				if(result[i][j].equals(keyword)){
+					System.out.println("Train code: " + result[i][0] + " Location: " + result[i][2]);
+				}
+			}
+		}
 		
 	}
 
@@ -105,6 +105,12 @@ public class TrainSchedule extends Schedule{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void save(){
+		
+	}
+	
 	
 	
 
