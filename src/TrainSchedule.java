@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -16,6 +17,7 @@ import com.opencsv.CSVReader;
 
 public class TrainSchedule extends Schedule{		
 	String[][] result;
+	String[][] display;
 	
 	@Override
 	public void upload() throws IOException {
@@ -29,6 +31,7 @@ public class TrainSchedule extends Schedule{
 			data = list.toArray(data);
 			
 			result = new String[list.size()][list.size()];
+				
 			for(int i = 0; i < data.length; i++){
 				for(int j = 0 ; j < data[i].length; j++){
 					result[i] = data[i][j].split(",");			
@@ -37,6 +40,9 @@ public class TrainSchedule extends Schedule{
 			
 			for(int i = 0; i < result.length; i++){
 				for (int j = 0; j < result[i].length; j++){
+					if(result[i][j].equals("01-JAN-01 00.00.00") || result[i][j].equals(null)){
+						result[i][j] = "-";
+					}
 					System.out.print(result[i][j] + " ");
 					if(j == result[i].length-1){
 						System.out.println(" ");
@@ -67,7 +73,11 @@ public class TrainSchedule extends Schedule{
 		JFrame frame = new JFrame();
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    
-	    Object rowSchedule[][] = result;
+	    int n = result.length-1;
+	    String[][] newArray = new String[n][];
+	    System.arraycopy(result,1,newArray,0,n);
+	    
+	    Object rowSchedule[][] = newArray;
 	    Object columnTitle[] = result[0];
 	    JTable table = new JTable(rowSchedule, columnTitle);
 
@@ -78,6 +88,42 @@ public class TrainSchedule extends Schedule{
 	}
 
 	@Override
+	public void display2(){
+		JFrame frame = new JFrame();
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    
+	    int n = result.length-1;
+	    String[][] newArray = new String[n][];
+	    System.arraycopy(result,1,newArray,0,n);
+	    display = new String[newArray.length][newArray.length];
+	    
+	    display[0][0] = newArray[0][0];
+	    display[0][1] = newArray[0][2];
+	    display[0][3] = newArray[0][4];
+	    for(int i = 1; i < newArray.length; i++){
+	    		if(newArray[i][0].equals(newArray[i-1][0])){
+	    		}
+	    		else{
+	    			display[i][0] = newArray[i][0];
+	    			display[i][1] = newArray[i][2];
+	    			display[i-1][2] = newArray[i-1][2];
+	    			display[i][3] = newArray[i][4];
+	    			System.out.println(display[i][0]);
+	    		}
+	    }
+	      
+	    Object rowSchedule[][] = display;
+	    Object columnTitle[] = {"Train", "Start location", "Final destination", "Start time"};
+	    JTable table = new JTable(rowSchedule, columnTitle);
+
+	    JScrollPane scrollPane = new JScrollPane(table);
+	    frame.add(scrollPane, BorderLayout.CENTER);
+	    frame.setSize(1500, 500);
+	    frame.setVisible(true);
+	    
+		
+	}
+	@Override
 	public void search(String keyword) {
 		for(int i = 0; i < result.length; i++){
 			for(int j = 0; j < result[i].length; j++){
@@ -87,9 +133,7 @@ public class TrainSchedule extends Schedule{
 				}
 			}
 		}
-		
 	}
-
 
 
 	@Override
