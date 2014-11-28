@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.List;
+import java.util.Vector;
 
 
 public abstract class Schedule {
@@ -10,6 +12,7 @@ public abstract class Schedule {
 	public abstract void select();
 	public abstract void highlight();
 	public abstract void save();
+	//public abstract String[][] count();
 	
 	public static void main(String[] args) throws IOException {
 		TrainSchedule TS = new TrainSchedule();

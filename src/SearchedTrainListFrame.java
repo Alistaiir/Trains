@@ -24,7 +24,7 @@ public class SearchedTrainListFrame extends JPanel {
 	public SearchedTrainListFrame(Title myTitle) throws IOException {
 		setLayout(null);
 		
-		BufferedImage table2 =  ImageIO.read(new File("C:/Users/Vladimir/Desktop/Tabel3.png"));
+		BufferedImage table2 =  ImageIO.read(new File("C:/Users/mereltheisen/Downloads/Tabel3.png"));
 		JLabel label = new JLabel(new ImageIcon(table2));
 		label.setBounds(81, 73, 1120, 513);
 		add(label);
