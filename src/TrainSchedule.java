@@ -17,9 +17,11 @@ import com.opencsv.CSVReader;
 
 
 public class TrainSchedule extends Schedule{		
+	private static final int n = 0;
 	String[][] result;
 	String[][] display;
 	String[][] displaysearch;
+	String[][] selection;
 	
 	@Override
 	public void upload() throws IOException {
@@ -72,7 +74,6 @@ public class TrainSchedule extends Schedule{
 			}
 		}
 	  }
-		
 	
 	@Override
 	public void display(){
@@ -168,12 +169,35 @@ public class TrainSchedule extends Schedule{
 	}
 
 	@Override
-	public void select() {
-		// TODO Auto-generated method stub
+	public void select(String selected) {
+		JFrame frame = new JFrame();
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    selection = new String[result.length][result.length];
+	   
+	    int n = 0;
+		for(int i = 0; i < result.length; i++){
+				if(result[i][0].equals(selected)){
+					selection[n] = result[i];
+					n++;
+				}
+		}
+
+		String[][] small_selection = new String[n][8];
+		for(int i = 0; i < small_selection.length; i++){
+	    	for(int k = 0; k< small_selection[i].length; k++){
+	    		small_selection[i][k] = selection[i][k];
+	    	}
+		}
 		
+		Object rowSchedule[][] = small_selection;
+	    Object columnTitle[] = result[0];
+	    JTable table = new JTable(rowSchedule, columnTitle);
+
+	    JScrollPane scrollPane = new JScrollPane(table);
+	    frame.add(scrollPane, BorderLayout.CENTER);
+	    frame.setSize(1500, 500);
+	    frame.setVisible(true);
 	}
-
-
 
 	@Override
 	public void highlight() {
