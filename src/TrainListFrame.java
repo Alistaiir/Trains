@@ -53,7 +53,7 @@ public class TrainListFrame extends JPanel {
 		btnHome.setBounds(81, 597, 141, 64);
 		add(btnHome);
 		
-		BufferedImage tabel1 = ImageIO.read(new File("C:/Users/Vladimir/Desktop/Tabel1.png"));
+		BufferedImage tabel1 = ImageIO.read(new File("/Users/mereltheisen/Downloads/Tabel1.png"));
 		JLabel lblTableOfTrains = new JLabel(new ImageIcon(tabel1));
 		lblTableOfTrains.addMouseListener(new MouseAdapter() {
 			@Override
