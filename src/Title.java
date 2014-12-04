@@ -6,21 +6,26 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 
 public class Title extends JFrame {
 
 	public JPanel contentPane;
 	public JPanel previousTitleContent;
+	
 
 	/**
 	 * Launch the application.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	/*
+	public static void main(String[] args) throws IOException {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -32,15 +37,28 @@ public class Title extends JFrame {
 			}
 		});
 	}
+	*/
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
 	 */
-	public Title() {
+	public Title() throws IOException {
+		TrainSchedule TS = new TrainSchedule();
+		
 		setTitle("Train Schedule App");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1280, 760);
-		contentPane = new JPanel();
+		
+		Title title = this;
+		
+		BrowseFrame browseFrame = new BrowseFrame(title, TS);
+		previousTitleContent = (JPanel) getContentPane();
+		setContentPane(browseFrame);
+		invalidate();
+		validate();
+		
+		/*contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -58,7 +76,7 @@ public class Title extends JFrame {
 				validate();
 			}
 		});
-		btnStart.setBounds(1000, 580, 141, 64);
+		btnStart.setBounds(999, 597, 141, 64);
 		contentPane.add(btnStart);
 		
 		JLabel lblLogo = new JLabel("Logo");
@@ -72,7 +90,8 @@ public class Title extends JFrame {
 				System.exit(0);
 			}
 		});
-		btnQuit.setBounds(98, 580, 141, 64);
-		contentPane.add(btnQuit);
+		btnQuit.setBounds(81, 597, 141, 64);
+		getContentPane().add(btnQuit);*/
 	}
+
 }

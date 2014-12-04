@@ -16,7 +16,8 @@ import com.opencsv.CSVParser;
 import com.opencsv.CSVReader;
 
 
-public class TrainSchedule extends Schedule{		
+public class TrainSchedule extends Schedule{	
+	
 	private static final int n = 0;
 	String[][] result;
 	String[][] display;
@@ -24,8 +25,9 @@ public class TrainSchedule extends Schedule{
 	String[][] selection;
 	
 	@Override
-	public void upload() throws IOException {
-		String csvFile = "/Users/mereltheisen/Documents/UCL/GC02 - Apps Design/Scheds.csv";
+	public void upload(String filePath) throws IOException {
+		//Path where csv file comes from. 
+		String csvFile = filePath;
 		CSVReader reader = null;
 		try	{ 
 			reader = new CSVReader(new FileReader(csvFile));
@@ -33,6 +35,7 @@ public class TrainSchedule extends Schedule{
 			
 			//This is an array with all the data from the CSV file in it. 
 			String[][] data = new String[list.size()][];
+			result = data;
 			data = list.toArray(data);
 			
 			//This array will be the data from the CSV file split at each point where there is a comma. 
@@ -50,10 +53,12 @@ public class TrainSchedule extends Schedule{
 						result[i][j] = "-";
 					}
 					//This only prints the result in the console, can be deleted in final project. 
+					
 					System.out.print(result[i][j] + " ");
 					if(j == result[i].length-1){
 						System.out.println(" ");
 					}
+					
 				}
 			}
 		}
@@ -76,10 +81,7 @@ public class TrainSchedule extends Schedule{
 	  }
 	
 	@Override
-	public void display(){
-		JFrame frame = new JFrame();
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    
+	public JTable display(){
 	    //This creates a new array which is the same as result, apart from the title line, the first one in result. 
 	    int n = result.length-1;
 	    String[][] newArray = new String[n][];
@@ -126,23 +128,18 @@ public class TrainSchedule extends Schedule{
 	    Object rowSchedule[][] = small_display;
 	    Object columnTitle[] = {"Train", "Start location", "Final destination", "Start time"};
 	    JTable table = new JTable(rowSchedule, columnTitle);
-
-	    JScrollPane scrollPane = new JScrollPane(table);
-	    frame.add(scrollPane, BorderLayout.CENTER);
-	    frame.setSize(1500, 500);
-	    frame.setVisible(true);	
+	    
+	    return table;
 	}
 	
 	@Override
-	public void search(String keyword) { 
-		JFrame frame = new JFrame();
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public JTable search(String searchTerm) { 
 	    displaysearch = new String[result.length][result.length];
 	   
 	    int n = 0;
 		for(int i = 0; i < result.length; i++){
 			for(int j = 0; j < result[i].length; j++){
-				if(result[i][j].equals(keyword)){
+				if((result[i][j].toLowerCase()).contains(searchTerm)){
 					displaysearch[n]= result[i];
 					n++;
 				}
@@ -162,41 +159,35 @@ public class TrainSchedule extends Schedule{
 	    Object columnTitle[] = result[0];
 	    JTable table = new JTable(rowSchedule, columnTitle);
 
-	    JScrollPane scrollPane = new JScrollPane(table);
-	    frame.add(scrollPane, BorderLayout.CENTER);
-	    frame.setSize(1500, 500);
-	    frame.setVisible(true);
+	    return table;
 	}
 
 	@Override
-	public void select(String selected) {
-		JFrame frame = new JFrame();
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public JTable select(String selectedTrain) {
 	    selection = new String[result.length][result.length];
 	   
 	    int n = 0;
 		for(int i = 0; i < result.length; i++){
-				if(result[i][0].equals(selected)){
+				if(result[i][0].equals(selectedTrain)){
 					selection[n] = result[i];
 					n++;
 				}
 		}
-
+		
+		System.out.println(n);
 		String[][] small_selection = new String[n][8];
 		for(int i = 0; i < small_selection.length; i++){
 	    	for(int k = 0; k< small_selection[i].length; k++){
 	    		small_selection[i][k] = selection[i][k];
+	    		System.out.println(small_selection[i][k]);
 	    	}
 		}
 		
 		Object rowSchedule[][] = small_selection;
 	    Object columnTitle[] = result[0];
 	    JTable table = new JTable(rowSchedule, columnTitle);
-
-	    JScrollPane scrollPane = new JScrollPane(table);
-	    frame.add(scrollPane, BorderLayout.CENTER);
-	    frame.setSize(1500, 500);
-	    frame.setVisible(true);
+	    
+	    return table;
 	}
 
 	@Override
